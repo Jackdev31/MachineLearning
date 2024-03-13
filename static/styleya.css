@@ -1,0 +1,36 @@
+body {
+    background: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+h2{
+    margin-bottom: 30px;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.form-group {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.card {
+    margin-bottom: 20px;
+    height: 300px; 
+}
+.card-img {
+    height: 200px; 
+    object-fit: cover;
+}
+.card-title {
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    height: 3.6rem; 
+    margin-bottom: 0.5rem; 
+}
+.bg-c-color{
+    background:black;
+}
