@@ -1,36 +1,43 @@
 body {
-    background: black;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-h2{
-    margin-bottom: 30px;
+    background-color: black;
+    color: #97FFF4;
 }
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+    margin-top: 50px;
 }
-.form-group {
-    margin-bottom: 20px;
+.form-group label {
+    color: #97FFF4;
+}
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.img-thumbnail {
+    width: 250px; 
+    height: 250px; 
+    object-fit: cover; 
+}
+
+.recommended-songs {
+    display: flex;
+    justify-content: center; 
+    list-style: none;
+    padding: 0;
+}
+
+.song-item {
+    margin: 10px;
+}
+
+.song-info {
     text-align: center;
 }
-.card {
-    margin-bottom: 20px;
-    height: 300px; 
-}
-.card-img {
-    height: 200px; 
-    object-fit: cover;
-}
-.card-title {
-    font-size: 1rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    height: 3.6rem; 
-    margin-bottom: 0.5rem; 
-}
-.bg-c-color{
-    background:black;
+
+.song-title {
+    margin-top: 5px; 
+    font-size: 14px;
 }

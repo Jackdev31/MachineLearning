@@ -5,59 +5,44 @@ import random
 
 app = Flask(__name__)
 
-data = pd.read_csv('testingko.csv')
+data = pd.read_csv('imgsong.csv')
 data = data.dropna()
-X = data.drop(columns=["songs"])
-y = data["songs"]
+
+X = data.drop(columns=["song_title", "img_song"])
+y = data["song_title"]
 
 model = DecisionTreeClassifier()
 model.fit(X.values, y)
 
 genre_label = {
-    1: "Pop", 2: "Rock", 3: "Emo", 4: "K-pop", 5: "Metal"
+    1: "Pop", 2: "Rock", 3: "Hip-Hop", 4: "Metal", 5: "R&B"
 }
-
-artist_genre = {
-    1: 1, 2: 1, 3: 1, 4: 1, 5: 1,  
-    6: 2, 7: 2, 8: 2, 9: 2, 10: 2,
-    11:3, 12:3, 13:3, 14:3, 15:3,
-    16:4, 17:4, 18:4, 19:4, 20:4,
-    21:5, 22:5, 23:5, 24:5, 25:5  
-}
-
-
-genre_artists = {
-    1: {1: "Ed Sheeran", 2: "Taylor Swift", 3: "Justin Bieber", 4: "Ariana Grande", 5: "Katy Perry"}, #Pop
-    2: {6: "Eagles", 7: "AC DC", 8: "Air Supply", 9: "The Beatles", 10: "Fallout Boy"}, #Rock
-    3: {11: "Paramore", 12: "My Chemical Romance", 13: "All Time Low", 14: "Linkin Park", 15: "Yellowcard"}, #Emo
-    4: {16: "IU", 17: "EXO", 18: "GOT 7", 19: "BTS", 20: "ENHYPEN"}, #K-pop
-    5: {21: "Black Sabbath", 22: "Megadeth", 23: "Judas Priest", 24: "Metallica", 25: "Dream Theater"} #Metal
+preferred = {
+    1: "International", 2: "Local"
 }
 
 @app.route('/')
 def index():
-    return render_template('index.html',
-        genres=genre_label,
-        artists=genre_artists)
+    return render_template('index.html', genre_label=genre_label, preferred=preferred)
 
-@app.route('/recommend', methods=['POST'])
+@app.route('/suggested', methods=['POST'])
 def predict():
-    genre = int(request.form['genre'])
-    artist = int(request.form['artist'])
-    
-    artist_songs = data[data['artist'] == artist]['songs'].tolist()
-    
-    popular_random = random.sample(artist_songs, 5)
-    
-    selected_artist = genre_artists[genre][artist]
-    
-    return render_template('index.html',
-        popular_random=popular_random,
-        genres=genre_label,
-        artists=genre_artists[genre],
-        selected_genre=genre,
-        artistname=selected_artist)
+    song_genre = int(request.form['song_genre'])
+    prefer = int(request.form['preferred']) 
 
+    predict_song = model.predict([[song_genre, prefer]])[0] 
+
+    filtered_data = data[(data['song_genre'] == song_genre) & (data['preferred'] == prefer)]
+
+    recommended_songs = random.sample(filtered_data[['song_title', 'img_song']].values.tolist(), 5)
+
+    for song in recommended_songs:
+        song[1] = f"img/{song[1]}"
+
+    return render_template('index.html', predict_song=predict_song,
+        recommended_songs=recommended_songs,
+        genre_label=genre_label,
+        preferred=preferred)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
